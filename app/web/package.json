@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 3000",
+    "dev": "vite dev --port 3001",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest run",
@@ -81,4 +81,3 @@
     "web-vitals": "^5.1.0"
   }
 }
-
