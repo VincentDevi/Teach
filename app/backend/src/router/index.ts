@@ -1,6 +1,11 @@
+import { os } from "@orpc/server";
 import { addTodo, listTodos } from "./todos";
 
-export default {
-  listTodos,
-  addTodo,
-};
+export const router = os.router({
+  todo: {
+    list: listTodos,
+    add: addTodo,
+  },
+});
+
+export type Router = typeof router;

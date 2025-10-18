@@ -1,17 +1,11 @@
 import { Elysia } from "elysia";
-import { os } from "@orpc/server";
 import { cors } from "@elysiajs/cors";
-import { OpenAPIHandler } from "@orpc/openapi/fetch";
-import { openapi } from "@elysiajs/openapi";
+import { RPCHandler } from "@orpc/server/fetch";
+import { router } from "./router";
 
-// Create router with your procedures
-const router = os.router({
-  ping,
-});
-const handler = new OpenAPIHandler(router);
+const handler = new RPCHandler(router);
 
 const app = new Elysia()
-  .use(openapi)
   .use(
     cors({
       origin: ["http://localhost:3001"], // Your frontend URL
