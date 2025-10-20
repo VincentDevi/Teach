@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { orpc } from "@/orpc/client";
 
-export const Route = createFileRoute("/demo/orpc-todo")({
+export const Route = createFileRoute("/_authenticated/orpc-todo")({
   component: ORPCTodos,
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(
