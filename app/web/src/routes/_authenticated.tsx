@@ -10,22 +10,20 @@ export const Route = createFileRoute("/_authenticated")({
 function AuthenticatedLayout() {
   const auth = useAuth();
   const { client } = useSurreal();
-  useEffect(() => {
-    if (auth.isSignedIn && auth.isLoaded) {
-      auth.getToken().then((jwt) => {
-        if (jwt) {
-          console.log(jwt);
-          try {
-            client.authenticate(jwt);
-            console.log(client.status);
-            console.log(client.connection);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      });
+  const databaseAuth = async () => {
+    try {
+      const token = await auth.getToken();
+      await client.authenticate(token as string);
+      console.log(client.status);
+      console.log(client.connection);
+    } catch (error) {
+      console.log(error);
     }
-  }, [auth.isSignedIn, auth.isLoaded, auth, client]);
+  };
+  useEffect(() => {
+    console.log(auth.isSignedIn);
+    databaseAuth();
+  }, [auth.isSignedIn]);
 
   if (!auth.isLoaded) {
     return <div>Loading...</div>;
