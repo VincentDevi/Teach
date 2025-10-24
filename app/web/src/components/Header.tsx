@@ -10,6 +10,12 @@ import {
 import { useState } from "react";
 import ClerkHeader from "../integrations/clerk/header-user.tsx";
 import { Link } from "@tanstack/react-router";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +47,12 @@ export default function Header() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <h2 className="text-xl font-bold">Navigation</h2>
           <button
@@ -67,51 +79,8 @@ export default function Header() {
             <span className="font-medium">Home</span>
           </Link>
 
-          {/* Demo Links Start */}
-
           <Link
-            to="/demo/start/server-funcs"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <SquareFunction size={20} />
-            <span className="font-medium">Start - Server Functions</span>
-          </Link>
-
-          <Link
-            to="/demo/start/api-request"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <Network size={20} />
-            <span className="font-medium">Start - API Request</span>
-          </Link>
-
-          <div className="flex flex-row justify-between">
-            <Link
-              to="/demo/start/ssr"
-              onClick={() => setIsOpen(false)}
-              className="flex-1 flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-              activeProps={{
-                className:
-                  "flex-1 flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-              }}
-            >
-              <StickyNote size={20} />
-              <span className="font-medium">Start - SSR Demos</span>
-            </Link>
-          </div>
-
-          <Link
-            to="/demo/orpc-todo"
+            to="/orpc-todo"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
             activeProps={{
@@ -121,32 +90,6 @@ export default function Header() {
           >
             <Network size={20} />
             <span className="font-medium">oRPC Todo</span>
-          </Link>
-
-          <Link
-            to="/demo/tanstack-query"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <Network size={20} />
-            <span className="font-medium">TanStack Query</span>
-          </Link>
-
-          <Link
-            to="/demo/clerk"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <Globe size={20} />
-            <span className="font-medium">Clerk</span>
           </Link>
         </nav>
 

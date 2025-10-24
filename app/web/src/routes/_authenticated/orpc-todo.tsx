@@ -1,0 +1,96 @@
+import { useCallback, useEffect, useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { orpc } from "@/orpc/client";
+import { useSurrealClient } from "@/integrations/surrealdb/provider";
+
+export const Route = createFileRoute("/_authenticated/orpc-todo")({
+  component: ORPCTodos,
+  loader: async ({ context }) => {
+    await context.queryClient.prefetchQuery(
+      orpc.todo.list.queryOptions({
+        input: {},
+      }),
+    );
+  },
+});
+
+function ORPCTodos() {
+  const client = useSurrealClient();
+  const { data, refetch } = useQuery(
+    orpc.todo.list.queryOptions({
+      input: {},
+    }),
+  );
+
+  const fetchClient = async () => {
+    try {
+      const result = await client.query("select * from client");
+      return result[0];
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const carData = useQuery({ queryFn: fetchClient });
+
+  const [todo, setTodo] = useState("");
+  const { mutate: addTodo } = useMutation({
+    mutationFn: orpc.todo.add.call,
+    onSuccess: () => {
+      refetch();
+      setTodo("");
+    },
+  });
+
+  const submitTodo = useCallback(() => {
+    addTodo({ name: todo });
+  }, [addTodo, todo]);
+
+  return (
+    <>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 p-4 text-white">
+        <div className="w-full max-w-2xl p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10">
+          <h1 className="text-2xl mb-4">oRPC Todos list</h1>
+          <ul className="mb-4 space-y-2">
+            {data?.map((t) => (
+              <li
+                key={t.id}
+                className="bg-white/10 border border-white/20 rounded-lg p-3 backdrop-blur-sm shadow-md"
+              >
+                <span className="text-lg text-white">{t.name}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-col gap-2">
+            <input
+              type="text"
+              value={todo}
+              onChange={(e) => setTodo(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  submitTodo();
+                }
+              }}
+              placeholder="Enter a new todo..."
+              className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+            />
+            <button
+              type="submit"
+              disabled={todo.trim().length === 0}
+              onClick={submitTodo}
+              className="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-colors"
+            >
+              Add todo
+            </button>
+          </div>
+        </div>
+      </div>
+      <ul>
+        {carData.data?.map((c) => (
+          <li key={c.id}>{c.first_name}</li>
+        ))}
+      </ul>
+    </>
+  );
+}

@@ -9,58 +9,75 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoOrpcTodoRouteImport } from './routes/demo/orpc-todo'
-import { Route as DemoClerkRouteImport } from './routes/demo/clerk'
+import { Route as AuthenticatedOrpcTodoRouteImport } from './routes/_authenticated/orpc-todo'
+import { Route as AuthenticatedClerkRouteImport } from './routes/_authenticated/clerk'
 
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoOrpcTodoRoute = DemoOrpcTodoRouteImport.update({
-  id: '/demo/orpc-todo',
-  path: '/demo/orpc-todo',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedOrpcTodoRoute = AuthenticatedOrpcTodoRouteImport.update({
+  id: '/orpc-todo',
+  path: '/orpc-todo',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const DemoClerkRoute = DemoClerkRouteImport.update({
-  id: '/demo/clerk',
-  path: '/demo/clerk',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedClerkRoute = AuthenticatedClerkRouteImport.update({
+  id: '/clerk',
+  path: '/clerk',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/clerk': typeof DemoClerkRoute
-  '/demo/orpc-todo': typeof DemoOrpcTodoRoute
+  '/clerk': typeof AuthenticatedClerkRoute
+  '/orpc-todo': typeof AuthenticatedOrpcTodoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/clerk': typeof DemoClerkRoute
-  '/demo/orpc-todo': typeof DemoOrpcTodoRoute
+  '/clerk': typeof AuthenticatedClerkRoute
+  '/orpc-todo': typeof AuthenticatedOrpcTodoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/clerk': typeof DemoClerkRoute
-  '/demo/orpc-todo': typeof DemoOrpcTodoRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_authenticated/clerk': typeof AuthenticatedClerkRoute
+  '/_authenticated/orpc-todo': typeof AuthenticatedOrpcTodoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/clerk' | '/demo/orpc-todo'
+  fullPaths: '/' | '/clerk' | '/orpc-todo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/clerk' | '/demo/orpc-todo'
-  id: '__root__' | '/' | '/demo/clerk' | '/demo/orpc-todo'
+  to: '/' | '/clerk' | '/orpc-todo'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/_authenticated/clerk'
+    | '/_authenticated/orpc-todo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoClerkRoute: typeof DemoClerkRoute
-  DemoOrpcTodoRoute: typeof DemoOrpcTodoRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -68,27 +85,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/orpc-todo': {
-      id: '/demo/orpc-todo'
-      path: '/demo/orpc-todo'
-      fullPath: '/demo/orpc-todo'
-      preLoaderRoute: typeof DemoOrpcTodoRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/orpc-todo': {
+      id: '/_authenticated/orpc-todo'
+      path: '/orpc-todo'
+      fullPath: '/orpc-todo'
+      preLoaderRoute: typeof AuthenticatedOrpcTodoRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/demo/clerk': {
-      id: '/demo/clerk'
-      path: '/demo/clerk'
-      fullPath: '/demo/clerk'
-      preLoaderRoute: typeof DemoClerkRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/clerk': {
+      id: '/_authenticated/clerk'
+      path: '/clerk'
+      fullPath: '/clerk'
+      preLoaderRoute: typeof AuthenticatedClerkRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedClerkRoute: typeof AuthenticatedClerkRoute
+  AuthenticatedOrpcTodoRoute: typeof AuthenticatedOrpcTodoRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedClerkRoute: AuthenticatedClerkRoute,
+  AuthenticatedOrpcTodoRoute: AuthenticatedOrpcTodoRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoClerkRoute: DemoClerkRoute,
-  DemoOrpcTodoRoute: DemoOrpcTodoRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
