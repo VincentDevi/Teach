@@ -10,6 +10,12 @@ import {
 import { useState } from "react";
 import ClerkHeader from "../integrations/clerk/header-user.tsx";
 import { Link } from "@tanstack/react-router";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +47,12 @@ export default function Header() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <h2 className="text-xl font-bold">Navigation</h2>
           <button

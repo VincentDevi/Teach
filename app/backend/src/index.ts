@@ -19,9 +19,11 @@ const app = new Elysia()
     "/rpc*",
     async (ctx) => {
       const auth = ctx.auth();
-      if (!auth.userId) {
+      console.log(auth);
+      if (!auth.sessionId) {
         return ctx.status(401);
       }
+      console.log(auth);
       const { response } = await handler.handle(ctx.request, {
         prefix: "/rpc",
         context: {
