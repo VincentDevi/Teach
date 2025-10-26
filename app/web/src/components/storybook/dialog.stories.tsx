@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Dialog } from "./dialog";
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 
 const meta = {
   title: "Form/Dialog",
@@ -40,10 +40,10 @@ export const WithFooter: Story = {
     ),
     footer: (
       <div className="flex gap-3 justify-end">
-        <Button variant="secondary" size="medium">
+        <Button variant="secondary" size="default">
           Cancel
         </Button>
-        <Button variant="primary" size="medium">
+        <Button variant="default" size="default">
           Confirm
         </Button>
       </div>
@@ -88,10 +88,10 @@ export const Form: Story = {
     ),
     footer: (
       <div className="flex gap-3 justify-end">
-        <Button variant="secondary" size="medium">
+        <Button variant="secondary" size="default">
           Cancel
         </Button>
-        <Button variant="primary" size="medium">
+        <Button variant="default" size="default">
           Create Account
         </Button>
       </div>
