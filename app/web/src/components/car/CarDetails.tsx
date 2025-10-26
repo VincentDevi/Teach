@@ -5,20 +5,21 @@ import { DetailsTitle } from "../ui/details/detailsTitle";
 import { DetailsUl } from "../ui/details/detailsUl";
 
 type CarDetailsProps = {
+  id: string;
   model: string;
   brand: string;
   year: number;
   oilType: string;
   oilQuantity: number;
   cc: number;
-  slot: ReactNode;
+  slot?: ReactNode;
 };
 
 export default function CarDetails(props: CarDetailsProps) {
   return (
     <DetailsContainer>
-      <div className="flex justify-between px-4 py-2">
-        <DetailsTitle>Car Details</DetailsTitle>
+      <div className="flex justify-between">
+        <DetailsTitle>{props.id}</DetailsTitle>
         {props.slot}
       </div>
       <DetailsContainer>

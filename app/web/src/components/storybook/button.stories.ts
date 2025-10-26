@@ -1,67 +1,87 @@
-import type { Meta, StoryObj } from '@storybook/react-vite'
-import { fn } from 'storybook/test'
-
-import { Button } from './button'
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { Button } from "@/components/ui/button";
 
 const meta = {
-  title: 'Form/Button',
+  title: "Form/Button",
   component: Button,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: { onClick: fn() },
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof Button>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
-    variant: 'primary',
-    children: 'Primary Button',
+    variant: "default",
+    children: "Default Button",
   },
-}
+};
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
-    children: 'Secondary Button',
+    variant: "secondary",
+    children: "Secondary Button",
   },
-}
+};
 
-export const Danger: Story = {
+export const Destructive: Story = {
   args: {
-    variant: 'danger',
-    children: 'Delete Account',
+    variant: "destructive",
+    children: "Delete Account",
   },
-}
+};
+
+export const Outline: Story = {
+  args: {
+    variant: "outline",
+    children: "Outline Button",
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    variant: "ghost",
+    children: "Ghost Button",
+  },
+};
+
+export const Link: Story = {
+  args: {
+    variant: "link",
+    children: "Link Button",
+  },
+};
 
 export const Small: Story = {
   args: {
-    size: 'small',
-    children: 'Small Button',
+    size: "sm",
+    children: "Small Button",
   },
-}
+};
 
-export const Medium: Story = {
+export const DefaultSize: Story = {
   args: {
-    size: 'medium',
-    children: 'Medium Button',
+    size: "default",
+    children: "Default Size Button",
   },
-}
+};
 
 export const Large: Story = {
   args: {
-    size: 'large',
-    children: 'Large Button',
+    size: "lg",
+    children: "Large Button",
   },
-}
+};
 
 export const Disabled: Story = {
   args: {
-    variant: 'primary',
-    children: 'Disabled Button',
+    variant: "default",
+    children: "Disabled Button",
     disabled: true,
   },
-}
+};
