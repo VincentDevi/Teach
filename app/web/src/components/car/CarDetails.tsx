@@ -22,20 +22,22 @@ export default function CarDetails(props: CarDetailsProps) {
         <DetailsTitle>{props.id}</DetailsTitle>
         {props.slot}
       </div>
-      <DetailsContainer>
-        <DetailsUl>
-          <DetailsLi label="Model">{props.model}</DetailsLi>
-          <DetailsLi label="Brand">{props.brand}</DetailsLi>
-          <DetailsLi label="Year">{props.year}</DetailsLi>
-        </DetailsUl>
-      </DetailsContainer>
-      <DetailsContainer>
-        <DetailsUl>
-          <DetailsLi label="oil Type">{props.oilType}</DetailsLi>
-          <DetailsLi label="oil Quantity">{props.oilQuantity}</DetailsLi>
-          <DetailsLi label="cc">{props.cc}</DetailsLi>
-        </DetailsUl>
-      </DetailsContainer>
+      <div className="w-full h-full flex md:flex-row flex-col gap-4 md:justify-between">
+        <DetailsContainer>
+          <DetailsUl>
+            <DetailsLi label="Model">{props.model}</DetailsLi>
+            <DetailsLi label="Brand">{props.brand}</DetailsLi>
+            <DetailsLi label="Year">{props.year}</DetailsLi>
+          </DetailsUl>
+        </DetailsContainer>
+        <DetailsContainer>
+          <DetailsUl>
+            <DetailsLi label="oil Type">{props.oilType}</DetailsLi>
+            <DetailsLi label="oil Quantity">{props.oilQuantity}</DetailsLi>
+            <DetailsLi label="cc">{props.cc}</DetailsLi>
+          </DetailsUl>
+        </DetailsContainer>
+      </div>
     </DetailsContainer>
   );
 }
